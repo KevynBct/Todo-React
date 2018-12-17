@@ -15,8 +15,6 @@ export class TodoForm extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
-    addTodo () {
-    }
 
 
     handleInputChange(event) {
