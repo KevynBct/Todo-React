@@ -13,7 +13,13 @@ export class TodoForm extends Component {
 
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+
+        this.refInput = React.createRef();
     }
+
+    componentDidMount () {
+        this.refInput.current.focus();
+        }
 
 
     handleInputChange(event) {
@@ -30,7 +36,7 @@ export class TodoForm extends Component {
     render() {
         return (
             <form onSubmit={this.handleSubmit} >
-                <input type="text" name="todo" placeholder="Ajouter tâche" value={this.state.todo} onChange={this.handleInputChange} />
+                <input ref={this.refInput} type="text" name="todo" placeholder="Ajouter tâche" value={this.state.todo} onChange={this.handleInputChange} />
                 <input type="submit" value="Submit" id="submitButton" />
             </form>
         );
