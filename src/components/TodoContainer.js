@@ -1,41 +1,45 @@
 import React, {Component} from 'react';
 import {TodoList} from './TodoList.js'
 import {TodoForm} from './TodoForm'
+import {TodoContext} from './TodoContext';
 
 export class TodoContainer extends Component {
     constructor(props) {
         super(props);
 
-        this.addTodo = this.addTodo.bind(this);
+        this.addTodo = (title) => {
+            const todo = {title : title, isDone : false}
+            
+            this.setState((prevState) => ({
+                todoList: [...prevState.todoList, todo]
+            }));
+        }
 
         this.state = {
-            todoList : []
+            todoList : [],
+            addTodo : this.addTodo,
         }
+
+        this.clearTodoList = this.clearTodoList.bind(this);
     }
 
-    static getDerivedStateFromProps (props, state) {  
-        return {
-            todoList : state.todoList
-        }
-    }
-
-    addTodo(value){
-        const todo = {
-            title : value,
-            isDone : false
-        }
-        this.setState(prevState => ({
-            todoList: [...prevState.todoList, todo]
-          }))
+    clearTodoList(){
+        this.setState({
+            todoList: []
+        });
     }
 
     render() {
         return (
             <div>
-                <TodoForm addTodo={this.addTodo}/>
-                <TodoList todoList={this.state.todoList}/>
-                {this.props.children}
+                <TodoContext.Provider value={this.state}>
+                    <TodoForm />
+                    <button onClick={this.clearTodoList}>Réinitialiser</button>
+                    <TodoList />
+                    {this.props.children}
+                </TodoContext.Provider>
+                
             </div>
-        );
+        )
     }
 }

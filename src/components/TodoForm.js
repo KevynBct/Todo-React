@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../css/App.css';
+import {TodoContext} from './TodoContext';
 
 export class TodoForm extends Component {
     constructor (props){
@@ -11,8 +12,10 @@ export class TodoForm extends Component {
             todo : ''
         };
 
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    addTodo () {
     }
 
 
@@ -22,17 +25,22 @@ export class TodoForm extends Component {
         }); 
     }
 
-    handleSubmit(event){
-        this.props.addTodo(this.state.todo)
-        event.preventDefault();
-    }
-
     render() {
         return (
-            <form onSubmit={this.handleSubmit} >
-                <input type="text" name="todo" placeholder="Ajouter tâche" value={this.state.todo} onChange={this.handleInputChange} />
-                <input type="submit" value="Submit" id="submitButton" />
-            </form>
+            <TodoContext.Consumer>
+            {
+                ({addTodo}) => {
+                    return (
+                        <div>
+                        <form>
+                            <input type="text" name="todo" placeholder="Ajouter tâche" value={this.state.todo} onChange={this.handleInputChange} />
+                        </form>
+                        <button onClick={() => addTodo(this.state.todo)}>Ajouter</button>
+                        </div>
+                    )
+                }
+            }
+            </TodoContext.Consumer>
         );
     }
 }
